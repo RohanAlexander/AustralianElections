@@ -1,15 +1,18 @@
 Package: AustralianElections
-Title: What the Package Does (One Line, Title Case)
+Title: Provides Datasets About Australian Elections
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Rohan",
+           family = "Alexander",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "rohan.alexander@utoronto.ca",
+           comment = c(ORCID = "0000-0001-6759-7276"))
+Description: This package provides a variety of datasets related to Australian elections.
+Depends:
+    R (>= 2.10)
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/RohanAlexander/AustralianElections
 BugReports: https://github.com/RohanAlexander/AustralianElections/issues
+RoxygenNote: 6.1.1
