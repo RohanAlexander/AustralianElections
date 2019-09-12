@@ -31,3 +31,39 @@
 #' }
 "voting_data"
 
+
+#' Elections of all
+#'
+#' This is data about every individual who has been elected to the Australian
+#' House of Representatives or the Senate. Each row is an individual, and the
+#' columns are various pieces of information.
+#'
+#' @format A data frame with 1,780 rows and 17 variables that is current as of 24 August 2019:
+#' \describe{
+#'  \item{electionDate}{HAHAHA}
+#'  \item{parliament}{HAHAHA}
+#'  \item{sessionNumber}{HAHAHA}
+#'  \item{dateOfOpening}{HAHAHA}
+#'  \item{lastSittingDayOfTheHouseOfReps}{HAHAHA}
+#'  \item{dateOfProrogation}{HAHAHA}
+#'  \item{dateOfDissolutionOrExpiration}{HAHAHA}
+#'  \item{doubleDissolutionElection}{HAHAHA}
+#'  \item{comments}{HAHAHA}
+#' }
+"parliaments"
+
+#' Elections of all
+#'
+#' This is data about every individual who has been elected to the Australian
+#' House of Representatives or the Senate. Each row is an individual, and the
+#' columns are various pieces of information.
+#'
+#' @format A data frame with 1,780 rows and 17 variables that is current as of 24 August 2019:
+#' \describe{
+#'  \item{electionDate}{HAHAHA}
+#'  \item{seatsTotalNumber}{HAHAHA}
+#'  \item{electionWinner}{HAHAHA}
+#'  \item{comment}{HAHAHA}
+#' }
+"elections"
+
