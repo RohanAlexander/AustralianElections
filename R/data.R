@@ -67,3 +67,24 @@
 #' }
 "elections"
 
+
+
+#' Byelections
+#'
+#' This is data about every individual who has been elected to the Australian
+#' House of Representatives or the Senate. Each row is an individual, and the
+#' columns are various pieces of information.
+#'
+#' @format A data frame with 1,780 rows and 17 variables that is current as of 24 August 2019:
+#' \describe{
+#'  \item{date}{AHAH}
+#'  \item{parliament}{AHAH}
+#'  \item{division}{AHAH}
+#'  \item{cause}{AHAH}
+#'  \item{formerMember}{AHAH}
+#'  \item{party}{AHAH}
+#'  \item{winner}{AHAH}
+#'  \item{party_1}{AHAH}
+#'  \item{unopposed}{AHAH}
+#' }
+"byelections"
