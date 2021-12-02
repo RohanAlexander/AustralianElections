@@ -4,7 +4,7 @@
 #' `get_auselection()` downloads a requested Australian elections .csv dataset using an associated argument.
 #'
 #' @param dsr A character string used to request an Australian elections dataset. *See Request Codes* below.
-#' @param opr A character string used to pass a relational operator (`==`, `=>`, `=<`, `<`, or `>`) to the function.
+#' @param opr A character string used to pass a relational operator (`==`, `=>`, `=<`, `<`, `>`, or `!=`) to the function.
 #' Default of this parameter is set to be empty, which also acts as the equivalent (`==`) operator.
 #' @param year A numeric value used to request a specific election year. If there is no election for a given year,
 #' returns an empty dataframe. Default value is set to 0, which returns all election years.
@@ -63,7 +63,7 @@
 get_auselection <- function(dsr, opr = "", year = 0){
 
   # create vector to hold acceptable `opr` values
-  relops <- c("==", ">=", "<=", "<", ">", "")
+  relops <- c("==", ">=", "<=", "<", ">", "!=", "", "range")
 
   # assign download URLs vector, these are used to download the data files in a .csv format
   dwnlds <- c("https://raw.github.com/RohanAlexander/australian_federal_elections/master/outputs/byelections.csv",
@@ -92,7 +92,7 @@ get_auselection <- function(dsr, opr = "", year = 0){
 
   # set error for when passed an incorrect relational operator
   else if(!(opr %in% relops)){
-    stop("Provided value for `opr` is not a valid relational operator. Please use one of '==', '>=', '<=', '>', or '<'.")
+    stop("Provided value for `opr` is not a valid relational operator. Please use one of '==', '>=', '<=', '>', '<', '!='. Use opr = 'range' to return a range of election years.")
   }
 
   # else if provided character string is in request_code column values
@@ -114,13 +114,13 @@ get_auselection <- function(dsr, opr = "", year = 0){
 
 
       # if year is left at default value of 0
-      if(year == 0){
+      if(any(year == 0)){
         # read in complete CSV using `read_csv` from `readr`, do not show column types
         readr::read_csv(tmpdir, show_col_types = F)
       }
 
       # else if year does not equal default value
-      else if(year != 0){
+      else if(any(year != 0)){
 
         # read in CSV and filter for the requested year
         x <- readr::read_csv(tmpdir, show_col_types = F)
@@ -130,54 +130,70 @@ get_auselection <- function(dsr, opr = "", year = 0){
 
           # filter dataset using given relational operator
           # the rest of the code follows similarly
-          dplyr::filter(x, lubridate::year(x$date) == year)
+          dplyr::filter(x, lubridate::year(date) == year)
         }
 
         else if(opr == ">="){
-          dplyr::filter(x, lubridate::year(x$date) >= year)
+          dplyr::filter(x, lubridate::year(date) >= year)
         }
 
         else if(opr == "<="){
-          dplyr::filter(x, lubridate::year(x$date) <= year)
+          dplyr::filter(x, lubridate::year(date) <= year)
         }
 
         else if(opr == "<"){
-          dplyr::filter(x, lubridate::year(x$date) < year)
+          dplyr::filter(x, lubridate::year(date) < year)
         }
 
         else if(opr == ">"){
-          dplyr::filter(x, lubridate::year(x$date) > year)
+          dplyr::filter(x, lubridate::year(date) > year)
+        }
+
+        else if(opr == "!="){
+          dplyr::filter(x, lubridate::year(date) != year)
+        }
+
+        else if(opr == "range"){
+          dplyr::filter(x, lubridate::year(date) >= min(year), lubridate::year(date) <= max(year))
         }
       }
     }
     else if(dsr == "elections"){
       utils::download.file(dwnlds[[2]], tmpdir, quiet = F)
 
-      if(year == 0){
+      if(any(year == 0)){
         readr::read_csv(tmpdir, show_col_types = F)
       }
 
-      else if(year != 0){
+      else if(any(year != 0)){
         x <- readr::read_csv(tmpdir, show_col_types = F)
 
         if(opr == "==" | opr == ""){
-          dplyr::filter(x, lubridate::year(x$electionDate) == year)
+          dplyr::filter(x, lubridate::year(electionDate) == year)
         }
 
         else if(opr == ">="){
-          dplyr::filter(x, lubridate::year(x$electionDate) >= year)
+          dplyr::filter(x, lubridate::year(electionDate) >= year)
         }
 
         else if(opr == "<="){
-          dplyr::filter(x, lubridate::year(x$electionDate) <= year)
+          dplyr::filter(x, lubridate::year(electionDate) <= year)
         }
 
         else if(opr == ">"){
-          dplyr::filter(x, lubridate::year(x$electionDate) > year)
+          dplyr::filter(x, lubridate::year(electionDate) > year)
         }
 
         else if(opr == "<"){
-          dplyr::filter(x, lubridate::year(x$electionDate) < year)
+          dplyr::filter(x, lubridate::year(electionDate) < year)
+        }
+
+        else if(opr == "!="){
+          dplyr::filter(x, lubridate::year(electionDate) != year)
+        }
+
+        else if(opr == "range"){
+          dplyr::filter(x, lubridate::year(electionDate) >= min(year), lubridate::year(electionDate) <= max(year))
         }
       }
     }
@@ -185,32 +201,40 @@ get_auselection <- function(dsr, opr = "", year = 0){
 
       utils::download.file(dwnlds[[3]], tmpdir, quiet = F)
 
-      if(year == 0){
+      if(any(year == 0)){
         readr::read_csv(tmpdir, show_col_types = F)
       }
 
-      else if(year != 0){
+      else if(any(year != 0)){
 
         x <- readr::read_csv(tmpdir, show_col_types = F)
 
         if(opr == "==" | opr == ""){
-          dplyr::filter(x, lubridate::year(x$electionDate) == year)
+          dplyr::filter(x, lubridate::year(electionDate) == year)
         }
 
         else if(opr == ">="){
-          dplyr::filter(x, lubridate::year(x$electionDate) >= year)
+          dplyr::filter(x, lubridate::year(electionDate) >= year)
         }
 
         else if(opr == "<="){
-          dplyr::filter(x, lubridate::year(x$electionDate) <= year)
+          dplyr::filter(x, lubridate::year(electionDate) <= year)
         }
 
         else if(opr == ">"){
-          dplyr::filter(x, lubridate::year(x$electionDate) > year)
+          dplyr::filter(x, lubridate::year(electionDate) > year)
         }
 
         else if(opr == "<"){
-          dplyr::filter(x, lubridate::year(x$electionDate) < year)
+          dplyr::filter(x, lubridate::year(electionDate) < year)
+        }
+
+        else if(opr == "!="){
+          dplyr::filter(x, lubridate::year(electionDate) != year)
+        }
+
+        else if(opr == "range"){
+          dplyr::filter(x, lubridate::year(electionDate) >= min(year), lubridate::year(electionDate) <= max(year))
         }
       }
     }
@@ -218,31 +242,39 @@ get_auselection <- function(dsr, opr = "", year = 0){
     else if(dsr == "voting_data"){
       utils::download.file(dwnlds[[4]], tmpdir, quiet = F)
 
-      if(year == 0){
+      if(any(year == 0)){
         readr::read_csv(tmpdir, show_col_types = F)
       }
 
-      else if(year != 0){
+      else if(any(year != 0)){
         x <- readr::read_csv(tmpdir, show_col_types = F)
 
         if(opr == "==" | opr == ""){
-          dplyr::filter(x, lubridate::year(x$election_date) == year)
+          dplyr::filter(x, lubridate::year(election_date) == year)
         }
 
         else if(opr == ">="){
-          dplyr::filter(x, lubridate::year(x$election_date) >= year)
+          dplyr::filter(x, lubridate::year(election_date) >= year)
         }
 
         else if(opr == "<="){
-          dplyr::filter(x, lubridate::year(x$election_date) <= year)
+          dplyr::filter(x, lubridate::year(election_date) <= year)
         }
 
         else if(opr == ">"){
-          dplyr::filter(x, lubridate::year(x$election_date) > year)
+          dplyr::filter(x, lubridate::year(election_date) > year)
         }
 
         else if(opr == "<"){
-          dplyr::filter(x, lubridate::year(x$election_date) < year)
+          dplyr::filter(x, lubridate::year(election_date) < year)
+        }
+
+        else if(opr == "!="){
+          dplyr::filter(x, lubridate::year(election_date) != year)
+        }
+
+        else if(opr == "range"){
+          dplyr::filter(x, lubridate::year(election_date) >= min(year), lubridate::year(election_date) <= max(year))
         }
       }
     }
@@ -250,31 +282,39 @@ get_auselection <- function(dsr, opr = "", year = 0){
     else if(dsr == "voting_data_with_ids"){
       utils::download.file(dwnlds[[5]], tmpdir, quiet = F)
 
-      if(year == 0){
+      if(any(year == 0)){
         readr::read_csv(tmpdir, show_col_types = F)
       }
 
-      else if(year != 0){
+      else if(any(year != 0)){
         x <- readr::read_csv(tmpdir, show_col_types = F)
 
         if(opr == "==" | opr == ""){
-          dplyr::filter(x, lubridate::year(x$election_date) == year)
+          dplyr::filter(x, lubridate::year(election_date) == year)
         }
 
         else if(opr == ">="){
-          dplyr::filter(x, lubridate::year(x$election_date) >= year)
+          dplyr::filter(x, lubridate::year(election_date) >= year)
         }
 
         else if(opr == "<="){
-          dplyr::filter(x, lubridate::year(x$election_date) <= year)
+          dplyr::filter(x, lubridate::year(election_date) <= year)
         }
 
         else if(opr == ">"){
-          dplyr::filter(x, lubridate::year(x$election_date) > year)
+          dplyr::filter(x, lubridate::year(election_date) > year)
         }
 
         else if(opr == "<"){
-          dplyr::filter(x, lubridate::year(x$election_date) < year)
+          dplyr::filter(x, lubridate::year(election_date) < year)
+        }
+
+        else if(opr == "!="){
+          dplyr::filter(x, lubridate::year(election_date) != year)
+        }
+
+        else if(opr == "range"){
+          dplyr::filter(x, lubridate::year(election_date) >= min(year), lubridate::year(election_date) <= max(year))
         }
       }
     }
