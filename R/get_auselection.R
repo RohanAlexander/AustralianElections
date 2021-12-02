@@ -1,11 +1,12 @@
-#' Retrieve a csv dataset from the australian_elections repository.
+#' Retrieve a .csv dataset from the australian_elections GitHub repository.
 #'
 #' @description
-#' `get_auselection()` downloads a requested Australian elections .csv dataset using an associated argument.
+#' `get_auselection()` downloads a requested non-filtered or filtered Australian elections dataset given a set of associated arguments.
 #'
 #' @param dsr A character string used to request an Australian elections dataset. *See Request Codes* below.
 #' @param opr A character string used to pass a relational operator (`==`, `=>`, `=<`, `<`, `>`, or `!=`) to the function.
-#' Default of this parameter is set to be empty, which also acts as the equivalent (`==`) operator.
+#' Also takes a character string `'range'` to download a range of years given as a vector by \code{year}.
+#' Default of this parameter is set to be an empty string, which also acts as the equivalent (`==`) operator.
 #' @param year A numeric value used to request a specific election year. If there is no election for a given year,
 #' returns an empty dataframe. Default value is set to 0, which returns all election years.
 #'
@@ -19,13 +20,12 @@
 #' * `voting_data` requests the voting_data.csv dataset.
 #' * `voting_data_with_ids` requests the voting_data_with_ids.csv dataset.
 #'
-#' ## Incorrect Requests
-#' An incorrect request (an argument not associated with a dataset, non-character string argument, or non-numeric election year)
+#' An incorrect request (an argument not associated with a dataset, non-character string argument, non-relational operator, or non-numeric election year)
 #' will stop function processes and return an error message.
 #'
 #' @return A console printout of a tibble of arguments used with the function or
-#' the requested complete dataset using \code{dsr} to a user assigned variable,
-#' or the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
+#' the requested complete dataset using \code{dsr} assigned to a user variable.
+#' Or, the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
 #'
 #' @examples
 #' # Show request codes used for arguments in function.
@@ -45,10 +45,16 @@
 #' head(with_ids_1975_df)
 #'
 #' # Request values for the elections within and after 1925.
-#' with_ids_2575_df <- get_auselection("voting_data_with_ids", opr = ">=", year = 1925)
+#' with_ids_1925up_df <- get_auselection("voting_data_with_ids", opr = ">=", year = 1925)
 #'
-#' #Preview observation for the dataset.
-#' head(with_ids_)
+#' # Preview observation for the dataset.
+#' head(with_ids_1925up_df)
+#'
+#' # Request values for elections from 1925 to 1975.
+#' with_ids_25to75_df <- get_auselection("voting_data_with_ids", opr = "range", year = c(1925, 1975))
+#'
+#' # Preview observations for the dataset.
+#' head(with_ids_25to75_df)
 #' }
 #'
 #' @export
@@ -77,7 +83,8 @@ get_auselection <- function(dsr, opr = "", year = 0){
   # assign a tibble to hold the request codes used as arguments
   codetibble <- tibble::tibble(
     request_code = c("byelections", "elections", "parliaments", "voting_data", "voting_data_with_ids", "codes"),
-    dataset = c("Byelection data", "Election data", "Parliament data", "Voting data", "Voting with IDs data", "Request codes")
+    dataset = c("Byelection data - 1901-2018 - 158 obs. - 9 var.", "Election data - 1901-2019 - 46 obs. - 4 var.", "Parliament data - 1901-2019 - 75 obs. - 9 var.",
+                "Voting data - 1901-2019 - 65337 obs. - 25 var.", "Voting data with IDs - 1901-2019 - 65337 obs. - 22 var.", "Request codes - used to download a dataset.")
   )
 
   # set first error for if dsr is not a character string
