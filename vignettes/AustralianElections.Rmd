@@ -1,0 +1,280 @@
+---
+title: "Introduction to the AustralianElections package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to the AustralianElections package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Standard use
+
+Load the package with:
+
+```{r setup}
+library(AustralianElections)
+```
+
+The purpose of `AustralianElections` is to make it easier to access data about Australian federal elections. This is done through the use of functions that get and manipulate publicly accessible datasets that were constructed for this purpose. These datasets have every politician in the House of Representatives and the Senate between 1901 and 2021. To get started with the package:
+
+## Codes to request a dataset
+
+Request codes are passed to the function `get_auselection()` to download a specific dataset in `AustralianElections`. But before downloading any dataset the required code must be known. To show which codes correspond to a given dataset, we can pass the string `"codes"` to `get_auselection()`. This will print the needed request codes to the console as a tibble, as seen below. Included in the printout is additional information on each dataset such as the years covered, number of obersvations, and the number of variables.
+
+```{r eval=F}
+get_auselection("codes")
+
+# A tibble: 5 x 2
+  request_code         dataset                                                
+  <chr>                <chr>                                                  
+1 byelections          Byelection data - 1901-2018 - 158 obs. - 9 var.        
+2 elections            Election data - 1901-2019 - 46 obs. - 4 var.           
+3 parliaments          Parliament data - 1901-2019 - 75 obs. - 9 var.         
+4 voting_data          Voting data - 1901-2019 - 65337 obs. - 25 var.         
+5 voting_data_with_ids Voting data with IDs - 1901-2019 - 65337 obs. - 22 var.
+```
+
+## Download a dataset
+
+The `get_auselection()` function can be used in several ways to download a dataset. First, it can be used to access an entire dataset by passing only the associated request code. Doing so will download the requested dataset with all election years to an assigned name. Below we have done this for the `voting_data` dataset.
+
+```{r eval=F}
+# Retrun the complete voting_data dataset
+voting_data_df <- get_auselection("voting_data")
+
+head(voting_data_df)
+
+# A tibble: 6 x 25
+  division  state division_num_enrolled division_num_voted division_percen~ original_name party
+  <chr>     <chr>                 <dbl>              <dbl>            <dbl> <chr>         <chr>
+1 BARRIER   NSW                   10290               5493             53.4 Benjamin Long NA   
+2 BARRIER   NSW                   10290               5493             53.4 Josiah Thomas Lab  
+3 BLAND     NSW                   10996               7370             67   Chris Watson  Lab  
+4 BLAND     NSW                   10996               7370             67   Patrick Heff~ NA   
+5 BLAND     NSW                   10996               7370             67   William Lucas FT   
+6 CANOBOLAS NSW                   11025               7717             70   Bernhard Wise Prot 
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+Second, the function can be used to filter for only a specific year. This can be done as follows:
+
+```{r eval=F}
+# Return the voting_data dataset for only the year 2018
+voting_data_2018_df <- get_auselection("voting_data", year = 2018)
+
+head(voting_data_2018_df)
+
+# A tibble: 6 x 25
+  division state division_num_enrolled division_num_voted division_percent~ original_name party
+  <chr>    <chr>                 <dbl>              <dbl>             <dbl> <chr>         <chr>
+1 BATMAN   VIC                  111857              91054              81.4 Adrian White~ NA   
+2 BATMAN   VIC                  111857              91054              81.4 Alex Bhathal  Grn  
+3 BATMAN   VIC                  111857              91054              81.4 Debbie Robin~ NA   
+4 BATMAN   VIC                  111857              91054              81.4 Ged Kearney   ALP  
+5 BATMAN   VIC                  111857              91054              81.4 Kevin Bailey  ACon 
+6 BATMAN   VIC                  111857              91054              81.4 Mark Mcdonald NA   
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+Third, the function can also be used to filter for a range of years. For instance, elections years greater or less than 1975; every election year but 1975; or election years from 1975 to 2019. This can be done by including a relational operator (>, <, >=, <=, or !=) or the string `"range"` as follows:
+
+```{r eval=F}
+# Return the voting_data dataset for years greater than or equal to 1975
+voting_data_gte_1975 <- get_auselection("voting_data", opr = ">=", year = 1975)
+
+head(voting_data_gte_1975)
+# A tibble: 6 x 25
+  division state division_num_enrolled division_num_voted division_percent~ original_name party
+  <chr>    <chr>                 <dbl>              <dbl>             <dbl> <chr>         <chr>
+1 BASS     TAS                   46744              43563              93.2 John Macrost~ ALP  
+2 BASS     TAS                   46744              43563              93.2 Kevin Newman  Lib  
+3 BASS     TAS                   46744              43563              93.2 Marcus Aussi~ NA   
+4 BASS     TAS                   46744              43563              93.2 Paul Kent     NA   
+5 BASS     TAS                   46744              43563              93.2 Sydney Negus  NA   
+6 BASS     TAS                   46744              43563              93.2 Violet Petro~ NA   
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+```{r eval=F}
+# Return every year but 1975 for voting_data dataset
+voting_data_not_75 <- get_auselection("voting_data", opr = "!=", year = 1975)
+
+head(voting_data_not_75)
+# A tibble: 6 x 25
+  division  state division_num_enrolled division_num_voted division_percen~ original_name party
+  <chr>     <chr>                 <dbl>              <dbl>            <dbl> <chr>         <chr>
+1 BARRIER   NSW                   10290               5493             53.4 Benjamin Long NA   
+2 BARRIER   NSW                   10290               5493             53.4 Josiah Thomas Lab  
+3 BLAND     NSW                   10996               7370             67   Chris Watson  Lab  
+4 BLAND     NSW                   10996               7370             67   Patrick Heff~ NA   
+5 BLAND     NSW                   10996               7370             67   William Lucas FT   
+6 CANOBOLAS NSW                   11025               7717             70   Bernhard Wise Prot 
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+In the case of requesting a range of election years, we use the string `"range"` in place of the relational operator. This allows the passing of a vector of years to `year`. It does not matter which order the years are given in the vector as the function only reads the max and min values.
+
+```{r eval=F}
+# Return the voting_data dataset for elections from 1975 to 2019
+voting_data_7519 <- get_auselection("voting_data", opr = "range", year = c(1975, 2019))
+
+head(voting_data_7519)
+# A tibble: 6 x 25
+  division state division_num_enrolled division_num_voted division_percent~ original_name party
+  <chr>    <chr>                 <dbl>              <dbl>             <dbl> <chr>         <chr>
+1 BASS     TAS                   46744              43563              93.2 John Macrost~ ALP  
+2 BASS     TAS                   46744              43563              93.2 Kevin Newman  Lib  
+3 BASS     TAS                   46744              43563              93.2 Marcus Aussi~ NA   
+4 BASS     TAS                   46744              43563              93.2 Paul Kent     NA   
+5 BASS     TAS                   46744              43563              93.2 Sydney Negus  NA   
+6 BASS     TAS                   46744              43563              93.2 Violet Petro~ NA   
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+```{r eval=F}
+# Return the voting_data dataset for elections from 1975 to 2019 reversing the requested years
+# This returns the exact same dataset as the one above
+voting_data_1975 <- get_auselection("voting_data", opr = "range", year = c(2019, 1975))
+
+head(voting_data_1975)
+# A tibble: 6 x 25
+  division state division_num_enrolled division_num_voted division_percent~ original_name party
+  <chr>    <chr>                 <dbl>              <dbl>             <dbl> <chr>         <chr>
+1 BASS     TAS                   46744              43563              93.2 John Macrost~ ALP  
+2 BASS     TAS                   46744              43563              93.2 Kevin Newman  Lib  
+3 BASS     TAS                   46744              43563              93.2 Marcus Aussi~ NA   
+4 BASS     TAS                   46744              43563              93.2 Paul Kent     NA   
+5 BASS     TAS                   46744              43563              93.2 Sydney Negus  NA   
+6 BASS     TAS                   46744              43563              93.2 Violet Petro~ NA   
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+## Two-party-preferred and Winners
+
+Along with complete datasets and the ability to filter by election year, `AustralianElections` also provides access to two pre-filtered datasets. These datasets are filtered by either the two-party-preferred results or the election winners.
+
+### Two-party-preferred
+
+We can use the `auselect_twopp()` function to access the pre-filtered two-party-preferred dataset. This provides access to a filtered version of either the `voting_data_with_ids` dataset or `voting_data` dataset. By default, the `voting_data_with_ids` dataset is returned.
+
+```{r eval=F}
+twopp_ids <- auselect_twopp()
+
+head(twopp_ids)
+# A tibble: 6 x 22
+  division    state division_num_enrolled division_num_vo~ division_percen~ original_name party
+  <chr>       <chr>                 <dbl>            <dbl>            <dbl> <chr>         <chr>
+1 CORANGAMITE VIC                   34895            25553             73.2 Scullin       ALP  
+2 CORANGAMITE VIC                   34895            25553             73.2 Gibson        VFU  
+3 ECHUCA      VIC                   34704            20638             59.5 Edwin Purbri~ NA   
+4 ECHUCA      VIC                   34704            20638             59.5 Frederick Pu~ Nat  
+5 ECHUCA      VIC                   34704            20638             59.5 William Hill  VFU  
+6 BARRIER     NSW                   26825            17634             65.7 Arthur Lawre~ NA   
+# ... with 15 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, capitalised <lgl>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>,
+#   uniqueID <chr>
+```
+
+To request the `voting_data` version we can include the argument `w_ids = FALSE` in the function.
+
+```{r eval=F}
+twopp_noids <- auselect_twopp(w_ids = FALSE)
+
+head(twopp_noids)
+# A tibble: 6 x 25
+  division    state division_num_enrolled division_num_vo~ division_percen~ original_name party
+  <chr>       <chr>                 <dbl>            <dbl>            <dbl> <chr>         <chr>
+1 CORANGAMITE VIC                   34895            25553             73.2 Scullin       ALP  
+2 CORANGAMITE VIC                   34895            25553             73.2 Gibson        VFU  
+3 ECHUCA      VIC                   34704            20638             59.5 Edwin Purbri~ NA   
+4 ECHUCA      VIC                   34704            20638             59.5 Frederick Pu~ Nat  
+5 ECHUCA      VIC                   34704            20638             59.5 William Hill  VFU  
+6 BARRIER     NSW                   26825            17634             65.7 Arthur Lawre~ NA   
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+### Winners
+
+To access the pre-filtered election winners dataset we can use the `auselect_winners()` function. This works similarly to the `auselect_twopp()` function in that it provides access to either the `voting_data_with_ids` dataset or `voting_data` dataset. Again, by default the `voting_data_with_ids` dataset is returned, and to return the `voting_data` dataset the argument `w_ids = FALSE` need be passed to the function.
+
+```{r eval=F}
+winners_ids <- auselect_winners()
+
+head(winners_ids)
+# A tibble: 6 x 22
+  division  state division_num_enrolled division_num_voted division_percen~ original_name party
+  <chr>     <chr>                 <dbl>              <dbl>            <dbl> <chr>         <chr>
+1 BARRIER   NSW                   10290               5493             53.4 Josiah Thomas Lab  
+2 BLAND     NSW                   10996               7370             67   Chris Watson  Lab  
+3 CANOBOLAS NSW                   11025               7717             70   Thomas Brown  Lab  
+4 COWPER    NSW                   12802               8632             67.4 Francis Clar~ Prot 
+5 DALLEY    NSW                   15110              10964             72.6 William Wilks FT   
+6 DARLING   NSW                    8930               5092             57   William Spen~ Lab  
+# ... with 15 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, capitalised <lgl>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>,
+#   uniqueID <chr>
+```
+
+```{r eval=F}
+winners_noids <- auselect_winners(w_ids = FALSE)
+
+head(winners_noids)
+# A tibble: 6 x 25
+  division  state division_num_enrolled division_num_voted division_percen~ original_name party
+  <chr>     <chr>                 <dbl>              <dbl>            <dbl> <chr>         <chr>
+1 BARRIER   NSW                   10290               5493             53.4 Josiah Thomas Lab  
+2 BLAND     NSW                   10996               7370             67   Chris Watson  Lab  
+3 CANOBOLAS NSW                   11025               7717             70   Thomas Brown  Lab  
+4 COWPER    NSW                   12802               8632             67.4 Francis Clar~ Prot 
+5 DALLEY    NSW                   15110              10964             72.6 William Wilks FT   
+6 DARLING   NSW                    8930               5092             57   William Spen~ Lab  
+# ... with 18 more variables: vote_redistribution_round <dbl>, votes_count <dbl>,
+#   votes_share <dbl>, swing <dbl>, redistributed_vote_count <dbl>,
+#   redistributed_vote_share <dbl>, txt_file <chr>, election_date <date>, starred <lgl>,
+#   plus <lgl>, surname <chr>, capitalised <lgl>, full_name <chr>, division_sent <chr>,
+#   full_name_for_matching <chr>, twoPP <dbl>, number_of_candidates <dbl>, winnerDummy <dbl>
+```
+
+
+
+
+
