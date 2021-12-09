@@ -23,7 +23,7 @@
 #' An incorrect request (an argument not associated with a dataset, non-character string argument, non-relational operator, or non-numeric election year)
 #' will stop function processes and return an error message.
 #'
-#' @return A console printout of a tibble of arguments used with the function or
+#' @return A console printout of arguments used with the function or
 #' the requested complete dataset using \code{dsr} assigned to a user variable.
 #' Or, the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
 #'
@@ -31,11 +31,16 @@
 #' # Show request codes used for arguments in function.
 #' get_auselection("codes")
 #'
+#' # Show in which years an election was held
+#' get_auselection("years")
+#'
 #' \dontrun{
 #' # Request the complete Voting Data with IDs dataset.
+#' # Prints a tibble to the console.
 #' with_ids_df <- get_auselection("voting_data_with_ids")
 #'
 #' # Preview observations for the dataset.
+#' # Prints a vector to the console.
 #' head(with_ids_df)
 #'
 #' # Request only values for the 1975 election from the Voting Data with IDs dataset.
@@ -79,6 +84,11 @@ get_auselection <- function(dsr, opr = "", year = 0){
               "https://raw.github.com/RohanAlexander/australian_federal_elections/master/outputs/voting_data_with_ids.csv"
 
   )
+  # assign a vector of election years
+  elect_years <- c(1901, 1903, 1906, 1910, 1913, 1914, 1917, 1919, 1922, 1925, 1928, 1929, 1931, 1934, 1937, 1940,
+                   1943, 1946, 1949, 1951, 1954, 1955, 1958, 1961, 1963, 1966, 1969, 1972, 1974, 1975, 1977, 1980,
+                   1983, 1984, 1987, 1990, 1993, 1996, 1998, 2001, 2004, 2007, 2010, 2013, 2016, 2019)
+
 
   # assign a tibble to hold the request codes used as arguments
   codetibble <- tibble::tibble(
@@ -101,7 +111,10 @@ get_auselection <- function(dsr, opr = "", year = 0){
   else if(!(opr %in% relops)){
     stop("Provided value for `opr` is not a valid relational operator. Please use one of '==', '>=', '<=', '>', '<', '!='. Use opr = 'range' to return a range of election years.")
   }
-
+  # show in which years an election was held
+  else if(dsr == "years"){
+    elect_years
+  }
   # else if provided character string is in request_code column values
   else if(dsr %in% codetibble$request_code){
     # assign to temporary file with .csv file type

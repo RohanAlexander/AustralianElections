@@ -1,0 +1,28 @@
+year <- sub("-.*", "", meta$Date)
+version_note <- sprintf("R package version %s", meta$Version)
+
+citEntry(entry = "Misc",
+         title = "AustralianElections: Provides Datasets About Australian Elections",
+         author = c(person("Rohan", "Alexander")),
+         note = version_note,
+         year = year,
+         url = "https://github.com/RohanAlexander/AustralianElections",
+         textVersion =
+           paste0("Alexander, R. (", year, "). ",
+                  title = "AustralianElections: Provides Datasets About Australian Elections. ",
+                  version_note, " https://github.com/RohanAlexander/AustralianElections.")
+
+)
+
+citEntry(entry = "Misc",
+         title = "Commonweealth of Australia",
+         author = c(person("Adam", "Carr")),
+         note = version_note,
+         year = year,
+         url = "http://psephos.adam-carr.net/countries/a/australia/",
+         textVersion =
+           paste0("Carr, A. (", year, "). ",
+                  title = "Commonwealth of Australia. ",
+                  version_note, " http://psephos.adam-carr.net/countries/a/australia/.")
+
+)
