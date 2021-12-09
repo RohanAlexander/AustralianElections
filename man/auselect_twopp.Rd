@@ -14,13 +14,13 @@ Default is set to TRUE, which returns a dataset with the unique identifier colum
 A filtered dataset with either unique identifier values or no unique identifier values as specified by \code{w_ids}.
 }
 \description{
-`auselect_twopp()` downloads and assigns a filtered dataset to a given variable.
+\code{auselect_twopp()} downloads and assigns a filtered dataset to a given variable.
 }
 \details{
-The `auselect_twopp()` function is used to return a pre-filtered version of either the `voting_data_with_ids` or `voting_data` datasets.
-On call, the function will filter the requested dataset based upon where two party preferred (`twoPP`) is true (a value of 1).
-The default dataset that is downloaded through this function is the `voting_data_with_ids` dataset.
-Setting the argument value of the function to `w_ids = F` will set the function to instead download the `voting_data` dataset.
+The \code{auselect_twopp()} function is used to return a pre-filtered version of either the \code{voting_data_with_ids} or \code{voting_data} datasets.
+On call, the function will filter the requested dataset based upon where two party preferred (\code{twoPP}) is true (a value of 1).
+The default dataset that is downloaded through this function is the \code{voting_data_with_ids} dataset.
+Setting the argument value of the function to \code{w_ids = F} will set the function to instead download the \code{voting_data} dataset.
 }
 \examples{
 

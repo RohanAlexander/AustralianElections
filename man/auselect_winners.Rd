@@ -14,13 +14,13 @@ Default is set to TRUE, which returns a dataset with the unique identifier colum
 A filtered dataset with either unique identifier values or no unique identifier values as specified by \code{w_ids}.
 }
 \description{
-`auselect_winners()` downloads and assigns a filtered dataset based upon the election winners to a given variable.
+\code{auselect_winners()} downloads and assigns a filtered dataset based upon the election winners to a given variable.
 }
 \details{
-The `auselect_winners()` function is used to return a pre-filtered version of either the `voting_data_with_ids` or `voting_data` datasets.
-On call, the function will filter the requested dataset with only election winners (`dummyWinners == 1`).
-The default dataset that is downloaded through this function is the `voting_data_with_ids` dataset.
-Setting the argument value of the function to `w_ids = F` will set the function to instead download the `voting_data` dataset.
+The \code{auselect_winners()} function is used to return a pre-filtered version of either the \code{voting_data_with_ids} or \code{voting_data} datasets.
+On call, the function will filter the requested dataset with only election winners (\code{dummyWinners == 1}).
+The default dataset that is downloaded through this function is the \code{voting_data_with_ids} dataset.
+Setting the argument value of the function to \code{w_ids = F} will set the function to instead download the \code{voting_data} dataset.
 }
 \examples{
 

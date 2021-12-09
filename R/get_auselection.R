@@ -23,9 +23,9 @@
 #' An incorrect request (an argument not associated with a dataset, non-character string argument, non-relational operator, or non-numeric election year)
 #' will stop function processes and return an error message.
 #'
-#' @return A console printout of arguments used with the function or
-#' the requested complete dataset using \code{dsr} assigned to a user variable.
-#' Or, the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
+#' @return A console printout of arguments used with the function,
+#' the requested complete dataset using \code{dsr} assigned to a user variable,
+#' or the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
 #'
 #' @examples
 #' # Show request codes used for arguments in function.

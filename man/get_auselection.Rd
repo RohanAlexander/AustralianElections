@@ -7,43 +7,51 @@
 get_auselection(dsr, opr = "", year = 0)
 }
 \arguments{
-\item{dsr}{A character string used to request an Australian elections dataset. *See Request Codes* below.}
+\item{dsr}{A character string used to request an Australian elections dataset. \emph{See Request Codes} below.}
 
-\item{opr}{A character string used to pass a relational operator (`==`, `=>`, `=<`, `<`, `>`, or `!=`) to the function.
-Also takes a character string `'range'` to download a range of years given as a vector by \code{year}.
-Default of this parameter is set to be an empty string, which also acts as the equivalent (`==`) operator.}
+\item{opr}{A character string used to pass a relational operator (\code{==}, \verb{=>}, \verb{=<}, \code{<}, \code{>}, or \code{!=}) to the function.
+Also takes a character string \code{'range'} to download a range of years given as a vector by \code{year}.
+Default of this parameter is set to be an empty string, which also acts as the equivalent (\code{==}) operator.}
 
 \item{year}{A numeric value used to request a specific election year. If there is no election for a given year,
 returns an empty dataframe. Default value is set to 0, which returns all election years.}
 }
 \value{
-A console printout of a tibble of arguments used with the function or
-the requested complete dataset using \code{dsr} assigned to a user variable.
-Or, the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
+A console printout of arguments used with the function,
+the requested complete dataset using \code{dsr} assigned to a user variable,
+or the requested dataset \code{dsr} for a given election year or years with \code{year} and \code{opr} to a user assigned variable.
 }
 \description{
-`get_auselection()` downloads a requested non-filtered or filtered Australian elections dataset given a set of associated arguments.
+\code{get_auselection()} downloads a requested non-filtered or filtered Australian elections dataset given a set of associated arguments.
 }
 \details{
-## Request Codes
-* `byelections` requests the byelections.csv dataset.
-* `elections` requests the elections.csv dataset.
-* `parliaments` requests the parliaments.csv dataset.
-* `voting_data` requests the voting_data.csv dataset.
-* `voting_data_with_ids` requests the voting_data_with_ids.csv dataset.
+\subsection{Request Codes}{
+\itemize{
+\item \code{byelections} requests the byelections.csv dataset.
+\item \code{elections} requests the elections.csv dataset.
+\item \code{parliaments} requests the parliaments.csv dataset.
+\item \code{voting_data} requests the voting_data.csv dataset.
+\item \code{voting_data_with_ids} requests the voting_data_with_ids.csv dataset.
+}
 
 An incorrect request (an argument not associated with a dataset, non-character string argument, non-relational operator, or non-numeric election year)
 will stop function processes and return an error message.
+}
 }
 \examples{
 # Show request codes used for arguments in function.
 get_auselection("codes")
 
+# Show in which years an election was held
+get_auselection("years")
+
 \dontrun{
 # Request the complete Voting Data with IDs dataset.
+# Prints a tibble to the console.
 with_ids_df <- get_auselection("voting_data_with_ids")
 
 # Preview observations for the dataset.
+# Prints a vector to the console.
 head(with_ids_df)
 
 # Request only values for the 1975 election from the Voting Data with IDs dataset.
