@@ -1,30 +1,22 @@
-citHeader("To cite the 'AustralianElections' package in publication use:")
+citHeader("To cite AustralianElections in publications use:")
 
 year <- sub("-.*", "", meta$Date)
-version_note <- sprintf("R package version %s", meta$Version)
+note <- sprintf("R package version %s", meta$Version)
 
-citEntry(entry = "Manual",
-         title = "AustralianElections: Provides Datasets About Australian Elections",
-         author = c(person("Rohan", "Alexander")),
-         note = version_note,
-         year = year,
-         url = "https://github.com/RohanAlexander/AustralianElections",
-         textVersion =
-          paste0("Rohan Alexander (", year, "). ",
-          title = "AustralianElections: Provides Datasets About Australian Elections. ",
-          version_note, " https://github.com/RohanAlexander/AustralianElections.")
+bibentry(
+  bibtype  = "Misc",
+  title    = "{AustralianElections}: Provides Datasets About Australian Elections",
+  author   = c(person("Rohan", "Alexander"),
+               person("Paul", "Hodgetts", "Alexander")),
+  year     = year,
+  note     = note,
+  url      = "https://github.com/RohanAlexander/AustralianElections"
+  )
 
-)
-
-citEntry(entry = "Misc",
-         title = "Commonweealth of Australia",
-         author = c(person("Adam", "Carr")),
-         note = version_note,
-         year = year,
-         url = "http://psephos.adam-carr.net/countries/a/australia/",
-         textVersion =
-          paste0("Carr, A. (", year, "). ",
-          title = "Commonwealth of Australia. ",
-          version_note, " http://psephos.adam-carr.net/countries/a/australia/.")
-
-)
+bibentry(
+  bibtype  = "Misc",
+  title    = "Australian Election Archive",
+  author   = person("Adam", "Carr"),
+  year     = year,
+  url      = "http://psephos.adam-carr.net/countries/a/australia/"
+  )

@@ -3,11 +3,15 @@ Type: Package
 Title: Provides Datasets About Australian Elections
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Rohan",
+    c(person(given = "Rohan",
            family = "Alexander",
            role = c("aut", "cre"),
            email = "rohan.alexander@utoronto.ca",
-           comment = c(ORCID = "0000-0001-6759-7276"))
+           comment = c(ORCID = "0000-0001-6759-7276")),
+      person(given = "Paul A.",
+      family = "Hodgetts",
+      role = c("aut"),
+      email = "hodgetts.paul@outlook.com"))
 Description: Provides a variety of datasets related to Australian elections from 1901 to 2019 (<https://github.com/RohanAlexander/AustralianElections>, 
     <http://psephos.adam-carr.net/countries/a/australia/>). This enhances the reproducibility of research that uses this data.
 Depends:
